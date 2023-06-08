@@ -1,10 +1,15 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, Text } from "@chakra-ui/react";
 import React from "react";
+import ProductCard from "../Components/ProductCard";
 
 export default function Home() {
   return (
     <Flex>
-      <Text>teste</Text>
+      <Divider my="2rem" />
+      <Flex>
+        <Flex></Flex>
+        <Flex></Flex>
+      </Flex>
     </Flex>
   );
 }
