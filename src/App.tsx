@@ -16,9 +16,9 @@ function App() {
             w="full"
             h="100vh"
             px="6rem"
-            bgImage={bg}
-            bgRepeat="no-repeat"
-            bgSize="cover"
+            // bgImage={bg}
+            // bgRepeat="no-repeat"
+            // bgSize="cover"
           >
             <Navbar nroCartItems={0} />
             <Home />

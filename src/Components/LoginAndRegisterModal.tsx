@@ -45,6 +45,7 @@ type LoginModalProps = {
 
 export default function LoginModal(props: LoginModalProps) {
   const toast = useToast();
+  const { registerNewUser, loginUser } = useAuthContext();
   const { user, setUser, isLogged, setIsLogged } = useAuthContext();
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
@@ -54,258 +55,6 @@ export default function LoginModal(props: LoginModalProps) {
   const [registerConfirmPassword, setRegisterConfirmPassword] = useState("");
   const [registerName, setRegisterName] = useState("");
   const [registerPhone, setRegisterPhone] = useState("");
-
-  async function registerNewUser() {
-    if (registerName.length < 3) {
-      toast({
-        title: "Epa, tem algo errado! 🤨",
-        description: "Você deve inserir um nome válido!.",
-        position: "top-right",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-      return;
-    }
-    if (registerEmail.includes("@") === false) {
-      toast({
-        title: "Epa, tem algo errado! 🤨",
-        description: "Você deve inserir um email válido!",
-        position: "top-right",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-      return;
-    }
-    if (registerPhone.length < 11) {
-      toast({
-        title: "Epa, tem algo errado! 🤨",
-        description: "Você deve inserir um telefone válido!",
-        position: "top-right",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-      return;
-    }
-    if (registerPassword.length < 6) {
-      toast({
-        title: "Epa, tem algo errado! 🤨",
-        description: "A senha deve conter ao menos 6 caracteres!",
-        position: "top-right",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-      return;
-    }
-    if (registerConfirmPassword !== registerPassword) {
-      toast({
-        title: "Epa, tem algo errado! 🤨",
-        description: "As senhas não coincidem!",
-        position: "top-right",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
-      .then(async (userCredential) => {
-        await setDoc(doc(db, "users", userCredential.user.uid), {
-          name: registerName,
-          email: registerEmail,
-          phone: registerPhone,
-          role: "US",
-        });
-        toast({
-          title: "Sucesso!",
-          description: "Seja muito bem-vindo! 😍",
-          position: "top-right",
-          status: "success",
-          duration: 9000,
-          isClosable: true,
-        });
-        props.onClose();
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        if (errorCode === "auth/email-already-in-use") {
-          toast({
-            title: "Epa, tem algo errado! 🤨",
-            description: "Este email já está em uso!",
-            position: "top-right",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-          return;
-        }
-        if (errorCode === "auth/invalid-email") {
-          toast({
-            title: "Epa, tem algo errado! 🤨",
-            description: "Este email é inválido!",
-            position: "top-right",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-          return;
-        }
-        toast({
-          title: "Epa, tem algo errado! 🤨",
-          description: errorMessage + "!",
-          position: "top-right",
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-        return;
-      });
-  }
-
-  async function loginUser() {
-    if (loginEmail.includes("@") === false) {
-      toast({
-        title: "Epa, tem algo errado! 🤨",
-        description: "Você deve inserir um email válido!",
-        position: "top-right",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-      return;
-    }
-    if (loginEmail === "" || loginPassword === "") {
-      toast({
-        title: "Epa, tem algo errado! 🤨",
-        description: "Você deve preencher todos os campos!",
-        position: "top-right",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-      return;
-    }
-    signInWithEmailAndPassword(auth, loginEmail, loginPassword)
-      .then((userCredential) => {
-        toast({
-          title: "Sucesso!",
-          description: "Bem-vindo de volta! 😍",
-          position: "top-right",
-          status: "success",
-          duration: 9000,
-          isClosable: true,
-        });
-        props.onClose();
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        if (errorCode === "auth/user-disabled") {
-          toast({
-            title: "Epa, tem algo errado! 🤨",
-            description: "Esta conta de usuário foi desativada",
-            position: "top-right",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        } else if (errorCode === "auth/user-not-found") {
-          toast({
-            title: "Epa, tem algo errado! 🤨",
-            description:
-              "Não foi encontrado nenhum usuário com o endereço de e-mail fornecido",
-            position: "top-right",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        } else if (errorCode === "auth/wrong-password") {
-          toast({
-            title: "Epa, tem algo errado! 🤨",
-            description: "A senha fornecida está incorreta",
-            position: "top-right",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        } else if (errorCode === "auth/email-already-in-use") {
-          toast({
-            title: "Epa, tem algo errado! 🤨",
-            description: "Este endereço de e-mail já está em uso",
-            position: "top-right",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        } else if (errorCode === "auth/weak-password") {
-          toast({
-            title: "Epa, tem algo errado! 🤨",
-            description:
-              "A senha fornecida é fraca, escolha uma senha mais segura",
-            position: "top-right",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        } else if (errorCode === "auth/popup-closed-by-user") {
-          toast({
-            title: "Epa, tem algo errado! 🤨",
-            description:
-              "A janela de autenticação foi fechada antes de concluir o processo",
-            position: "top-right",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        } else if (errorCode === "auth/credential-already-in-use") {
-          toast({
-            title: "Epa, tem algo errado! 🤨",
-            description: "Esta credencial já está associada a uma conta",
-            position: "top-right",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        } else if (
-          errorCode === "auth/account-exists-with-different-credential"
-        ) {
-          toast({
-            title: "Epa, tem algo errado! 🤨",
-            description:
-              "Já existe uma conta associada a este endereço de e-mail com um provedor de autenticação diferente",
-            position: "top-right",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        } else if (errorCode === "auth/network-request-failed") {
-          toast({
-            title: "Epa, tem algo errado! 🤨",
-            description:
-              "Falha na conexão com a Internet ou na solicitação de rede",
-            position: "top-right",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        } else {
-          // Outro código de erro não tratado
-          toast({
-            title: "Epa, tem algo errado! 🤨",
-            description: "Ocorreu um erro durante a autenticação",
-            position: "top-right",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-          return;
-        }
-      });
-  }
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered size="xl">
@@ -391,7 +140,9 @@ export default function LoginModal(props: LoginModalProps) {
                   w="full"
                   colorScheme="none"
                   mr={3}
-                  onClick={loginUser}
+                  onClick={() =>
+                    loginUser(loginEmail, loginPassword, props.onClose)
+                  }
                 >
                   Iniciar Sessão
                 </Button>
@@ -493,7 +244,16 @@ export default function LoginModal(props: LoginModalProps) {
 
               <ModalFooter>
                 <Button
-                  onClick={registerNewUser}
+                  onClick={() =>
+                    registerNewUser(
+                      registerName,
+                      registerEmail,
+                      registerPhone,
+                      registerPassword,
+                      registerConfirmPassword,
+                      props.onClose
+                    )
+                  }
                   _hover={{
                     transform: "scale(0.98)",
                   }}
