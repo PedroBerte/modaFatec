@@ -36,7 +36,7 @@ export default function Home() {
           <option value="option2">Z - A</option>
         </Select>
       </Flex>
-      <SimpleGrid mt="3rem" minChildWidth="240px" spacing="40px">
+      <SimpleGrid mt="1.8rem" minChildWidth="240px" spacing="40px">
         <ProductCard name="Nome teste" price={198.99} />
         <ProductCard name="Nome teste" price={198.99} />
         <ProductCard name="Nome teste" price={198.99} />

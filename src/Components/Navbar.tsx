@@ -21,6 +21,8 @@ import {
 import React from "react";
 import Logo from "./../images/logo.png";
 import {
+  Handbag,
+  Heart,
   MagnifyingGlass,
   ShoppingCartSimple,
   SignOut,
@@ -30,6 +32,7 @@ import {
 import LoginModal from "./LoginAndRegisterModal";
 import { useAuthContext } from "../Contexts/AuthContext";
 import { Avatar, AvatarBadge, AvatarGroup } from "@chakra-ui/react";
+import ProductAddModal from "./ProductAddModal";
 
 type NavBarProps = {
   nroCartItems: number;
@@ -38,13 +41,26 @@ type NavBarProps = {
 export default function Navbar(props: NavBarProps) {
   const toast = useToast();
   const { logoutUser } = useAuthContext();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const {
+    isOpen: isLoginRegisterOpen,
+    onOpen: onLoginRegisterOpen,
+    onClose: onLoginRegisterClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isAddProductOpen,
+    onOpen: onAddProductOpen,
+    onClose: onAddProductClose,
+  } = useDisclosure();
+
   const { user, isLogged } = useAuthContext();
 
   return (
     <>
-      <Flex as="nav" justify="space-between" py="1rem" align="center">
-        <Flex direction="column" align="center">
+      <Flex as="nav" py="1rem" align="center" justify="space-between">
+        <Image w="180px" src={Logo} />
+        <Flex direction="column" align="center" mr="5vw">
           <Text>Loja</Text>
           <Box width="95%" h="2px" bg="#BE0C6C" />
         </Flex>
@@ -52,10 +68,6 @@ export default function Navbar(props: NavBarProps) {
         <Box>
           <Text>Sobre Mim</Text>
         </Box>
-
-        <Flex>
-          <Image w="210px" src={Logo} />
-        </Flex>
 
         <Box>
           {isLogged ? (
@@ -66,7 +78,6 @@ export default function Navbar(props: NavBarProps) {
                   align="center"
                   _hover={{ textDecoration: "underline" }}
                   cursor="pointer"
-                  //onClick={() => logoutUser()}
                 >
                   <Avatar
                     textDecoration="none"
@@ -94,36 +105,60 @@ export default function Navbar(props: NavBarProps) {
                       </Flex>
                     </PopoverHeader>
                     <Flex
-                      mt="1rem"
-                      mb="0.5rem"
-                      ml="6px"
+                      align="center"
+                      mt={3}
+                      cursor="pointer"
+                      _hover={{
+                        transform: "size: 1.1",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      <User size={20} />
+                      <Text ml="0.5rem">Informações da conta</Text>
+                    </Flex>
+                    <Flex
+                      align="center"
+                      mt={2.5}
+                      cursor="pointer"
+                      _hover={{
+                        transform: "size: 1.1",
+                        textDecoration: "underline",
+                      }}
+                      onClick={() => onAddProductOpen()}
+                    >
+                      <Handbag size={20} />
+                      <Text ml="0.5rem">Adicionar um novo Produto</Text>
+                    </Flex>
+                    <Flex
+                      align="center"
+                      mt={2.5}
+                      cursor="pointer"
+                      _hover={{
+                        transform: "size: 1.1",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      <Heart size={20} />
+                      <Text ml="0.5rem">Itens favoritos</Text>
+                    </Flex>
+                    <Flex
+                      justify="flex-end"
                       direction="row"
                       align="center"
-                      justify="space-between"
+                      cursor="pointer"
+                      onClick={logoutUser}
                     >
-                      <Flex align="center">
-                        <User size={20} />
-                        <Text ml="0.5rem">Meu Perfil</Text>
-                      </Flex>
-                      <Flex
-                        justify="flex-end"
-                        direction="row"
-                        align="center"
-                        cursor="pointer"
-                        onClick={logoutUser}
-                      >
-                        <Text color="#FF5B5B" mr="0.5rem">
-                          Sair
-                        </Text>
-                        <SignOut color="#FF5B5B" size={20} />
-                      </Flex>
+                      <Text color="#FF5B5B" mr="0.5rem">
+                        Sair
+                      </Text>
+                      <SignOut color="#FF5B5B" size={20} />
                     </Flex>
                   </PopoverBody>
                 </PopoverContent>
               </Portal>
             </Popover>
           ) : (
-            <Text cursor="pointer" onClick={() => onOpen()}>
+            <Text cursor="pointer" onClick={() => onLoginRegisterOpen()}>
               Faça Login
             </Text>
           )}
@@ -144,7 +179,17 @@ export default function Navbar(props: NavBarProps) {
         </Flex>
       </Flex>
 
-      <LoginModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <LoginModal
+        isOpen={isLoginRegisterOpen}
+        onOpen={onLoginRegisterOpen}
+        onClose={onLoginRegisterClose}
+      />
+
+      <ProductAddModal
+        isOpen={isAddProductOpen}
+        onOpen={onAddProductOpen}
+        onClose={onAddProductClose}
+      />
     </>
   );
 }
