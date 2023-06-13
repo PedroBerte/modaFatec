@@ -6,8 +6,20 @@ import { defaultTheme } from "./themes/DefaultTheme";
 import bg from "./images/background.png";
 import Logo from "./images/logo.png";
 import AuthContextProvider from "./Contexts/AuthContext";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import ProductPage from "./pages/ProductPage";
 
 function App() {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Home />,
+    },
+    {
+      path: "/Produto/:productId",
+      element: <ProductPage />,
+    },
+  ]);
   return (
     <div className="App">
       <ChakraProvider theme={defaultTheme}>
@@ -21,7 +33,7 @@ function App() {
             bgSize="cover"
           >
             <Navbar nroCartItems={0} />
-            <Home />
+            <RouterProvider router={router} />
           </Box>
         </AuthContextProvider>
       </ChakraProvider>

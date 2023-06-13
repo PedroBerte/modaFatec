@@ -4,18 +4,11 @@ import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "typeface-inter";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-  },
-]);
-
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <App />
   </React.StrictMode>
 );
