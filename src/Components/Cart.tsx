@@ -11,10 +11,12 @@ import {
   Flex,
   Text,
   Tooltip,
+  useToast,
 } from "@chakra-ui/react";
 import { CartItem } from "./CartItem";
 import { useCart } from "../Contexts/CartContext";
 import { useAuthContext } from "../Contexts/AuthContext";
+import { useState } from "react";
 
 type CartProps = {
   isDrawerOpen: boolean;
@@ -28,8 +30,10 @@ export const { format: formatPrice } = new Intl.NumberFormat("pt-br", {
 });
 
 export function Cart({ isDrawerOpen, onDrawerClose, onDrawerOpen }: CartProps) {
-  const { cart } = useCart();
+  const { cart, checkout } = useCart();
   const { isLogged } = useAuthContext();
+  const [isCheckoutLoading, setIsCheckoutLoading] = useState(false);
+  const toast = useToast();
 
   const total = formatPrice(
     cart.reduce((sumTotal, productCart) => {
@@ -40,6 +44,32 @@ export function Cart({ isDrawerOpen, onDrawerClose, onDrawerOpen }: CartProps) {
       );
     }, 0)
   );
+
+  async function handleCheckout() {
+    setIsCheckoutLoading(true);
+    await checkout()
+      .then(() => {
+        toast({
+          title: "Oba! Sua compra foi finalizada com sucesso! 🥳",
+          position: "top-right",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+        setIsCheckoutLoading(false);
+        onDrawerClose();
+      })
+      .catch(() => {
+        toast({
+          title: "Ops! Ocorreu um erro ao finalizar a compra! 😥",
+          position: "top-right",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+        setIsCheckoutLoading(false);
+      });
+  }
 
   return (
     <Drawer
@@ -57,7 +87,11 @@ export function Cart({ isDrawerOpen, onDrawerClose, onDrawerOpen }: CartProps) {
           <Flex direction="column" gap="12px">
             {cart.map((cartItem) => {
               return (
-                <CartItem product={cartItem.product} amount={cartItem.amount} />
+                <CartItem
+                  key={cartItem.product.id}
+                  product={cartItem.product}
+                  amount={cartItem.amount}
+                />
               );
             })}
           </Flex>
@@ -86,6 +120,8 @@ export function Cart({ isDrawerOpen, onDrawerClose, onDrawerOpen }: CartProps) {
                 color="white"
                 colorScheme="none"
                 isDisabled={cart.length === 0 || !isLogged}
+                onClick={handleCheckout}
+                isLoading={isCheckoutLoading}
               >
                 Finalizar compra
               </Button>
