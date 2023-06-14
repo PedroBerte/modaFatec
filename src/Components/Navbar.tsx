@@ -33,13 +33,11 @@ import LoginModal from "./LoginAndRegisterModal";
 import { useAuthContext } from "../Contexts/AuthContext";
 import { Avatar, AvatarBadge, AvatarGroup } from "@chakra-ui/react";
 import ProductAddModal from "./ProductAddModal";
+import { useNavigate } from "react-router-dom";
 
-type NavBarProps = {
-  nroCartItems: number;
-};
-
-export default function Navbar(props: NavBarProps) {
+export default function Navbar() {
   const toast = useToast();
+  const navigate = useNavigate();
   const { logoutUser } = useAuthContext();
 
   const {
@@ -59,17 +57,25 @@ export default function Navbar(props: NavBarProps) {
   return (
     <>
       <Flex as="nav" py="1rem" align="center" justify="space-between">
-        <Image w="180px" src={Logo} />
-        <Flex direction="column" align="center" mr="5vw">
+        <Image
+          w="180px"
+          src={Logo}
+          onClick={() => navigate("/")}
+          cursor="pointer"
+        />
+        <Flex
+          direction="column"
+          align="center"
+          cursor="pointer"
+          _hover={{
+            transform: "scale(1.07)",
+            transition: "all 0.1s ease-in-out",
+          }}
+        >
           <Text>Loja</Text>
           <Box width="95%" h="2px" bg="#BE0C6C" />
         </Flex>
-
-        <Box>
-          <Text>Sobre Mim</Text>
-        </Box>
-
-        <Box>
+        <Box cursor="pointer">
           {isLogged ? (
             <Popover>
               <PopoverTrigger>
@@ -158,7 +164,14 @@ export default function Navbar(props: NavBarProps) {
               </Portal>
             </Popover>
           ) : (
-            <Text cursor="pointer" onClick={() => onLoginRegisterOpen()}>
+            <Text
+              cursor="pointer"
+              _hover={{
+                transform: "scale(1.07)",
+                transition: "all 0.1s ease-in-out",
+              }}
+              onClick={() => onLoginRegisterOpen()}
+            >
               Faça Login
             </Text>
           )}
@@ -172,8 +185,13 @@ export default function Navbar(props: NavBarProps) {
           justify="space-between"
           boxShadow="1px 1px 3px 2px rgba(0, 0, 0, 0.25);"
           bg="white"
+          cursor="pointer"
+          _hover={{
+            transform: "scale(1.07)",
+            transition: "all 0.1s ease-in-out",
+          }}
         >
-          <Text mr="5px">{props.nroCartItems}</Text>
+          <Text mr="5px">0</Text>
           <Text mr="15px">Itens</Text>
           <ShoppingCartSimple size={30} />
         </Flex>

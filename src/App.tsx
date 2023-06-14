@@ -8,16 +8,29 @@ import Logo from "./images/logo.png";
 import AuthContextProvider from "./Contexts/AuthContext";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import ProductPage from "./pages/ProductPage";
+import Footer from "./Components/Footer";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
+      element: (
+        <>
+          <Navbar />
+          <Home />
+          <Footer />
+        </>
+      ),
     },
     {
       path: "/Produto/:productId",
-      element: <ProductPage />,
+      element: (
+        <>
+          <Navbar />
+          <ProductPage />
+          <Footer />
+        </>
+      ),
     },
   ]);
   return (
@@ -26,13 +39,13 @@ function App() {
         <AuthContextProvider>
           <Box
             w="full"
-            h="100vh"
+            h="100%"
+            minH="100vh"
             px="6rem"
             bgImage={bg}
             bgRepeat="no-repeat"
             bgSize="cover"
           >
-            <Navbar nroCartItems={0} />
             <RouterProvider router={router} />
           </Box>
         </AuthContextProvider>

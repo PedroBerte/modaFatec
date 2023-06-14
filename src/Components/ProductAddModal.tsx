@@ -28,7 +28,7 @@ import UploadPhoto from "./UploadPhoto";
 import { FileText, UploadSimple } from "@phosphor-icons/react";
 import { FileTypes } from "../types/FileTypes";
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "../services/firebaseConfig";
+import { db, storage } from "../services/firebaseConfig";
 import { formatInputCurrency } from "../scripts/FormatCurrency";
 import { getStorage, ref, uploadString } from "firebase/storage";
 
@@ -40,7 +40,6 @@ type ProductAddModalProps = {
 
 export default function ProductAddModal(props: ProductAddModalProps) {
   const toast = useToast();
-  const storage = getStorage();
   const [principalFoto, setPrincipalFoto] = useState<FileTypes | null>();
   const [segundaFoto, setSegundaFoto] = useState<FileTypes | null>();
   const [terceiraFoto, setTerceiraFoto] = useState<FileTypes | null>();
@@ -95,40 +94,6 @@ export default function ProductAddModal(props: ProductAddModalProps) {
     const id = `${Math.random().toString(36).substring(2)}${Date.now().toString(
       36
     )}`;
-
-    await setDoc(doc(db, "products", id), {
-      id: id,
-      name: nomeProduto,
-      category: categoria,
-      material: material,
-      provider: fornecedor,
-      model: modelo,
-      saleValue: formatInputCurrency(valorVenda).replace("R$ ", ""),
-      colors: cores,
-      sizes: tamanhos,
-    })
-      .then(() => {
-        toast({
-          title: "Sucesso!",
-          position: "top-right",
-          description: "Produto cadastrado com sucesso!",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        toast({
-          title: "Erro!",
-          position: "top-right",
-          description: "Erro ao cadastrar produto.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-        setIsUploading(false);
-      });
 
     const primaryStorageRef = ref(storage, `products/${id}/1`);
     const secondStorageRef = ref(storage, `products/${id}/2`);
@@ -189,6 +154,41 @@ export default function ProductAddModal(props: ProductAddModalProps) {
       });
     props.onClose();
     setIsUploading(false);
+
+    await setDoc(doc(db, "products", id), {
+      id: id,
+      name: nomeProduto,
+      category: categoria,
+      material: material,
+      provider: fornecedor,
+      model: modelo,
+      saleValue: formatInputCurrency(valorVenda).replace("R$ ", ""),
+      colors: cores,
+      sizes: tamanhos,
+      description: descricao,
+    })
+      .then(() => {
+        toast({
+          title: "Sucesso!",
+          position: "top-right",
+          description: "Produto cadastrado com sucesso!",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        toast({
+          title: "Erro!",
+          position: "top-right",
+          description: "Erro ao cadastrar produto.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        setIsUploading(false);
+      });
   }
 
   useMemo(() => {

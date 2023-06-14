@@ -8,4 +8,5 @@ export type ProductTypes = {
   colors: string[];
   material: string;
   name: string;
+  description: string;
 };
