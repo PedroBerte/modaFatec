@@ -136,7 +136,7 @@ export default function LoginModal(props: LoginModalProps) {
                     transform: "scale(0.98)",
                   }}
                   color="white"
-                  bg="linear-gradient(90deg, #E7BAD8 0%, rgba(255, 52, 137, 0.56) 100%);"
+                  bg="linear-gradient(90deg, #e4a7cf 0%, rgba(255, 52, 137, 1) 50%);"
                   w="full"
                   colorScheme="none"
                   mr={3}
@@ -259,7 +259,7 @@ export default function LoginModal(props: LoginModalProps) {
                     transform: "scale(0.98)",
                   }}
                   color="white"
-                  bg="linear-gradient(90deg, #E7BAD8 0%, rgba(255, 52, 137, 0.56) 100%);"
+                  bg="linear-gradient(90deg, #e4a7cf 0%, rgba(255, 52, 137, 1) 50%);"
                   w="full"
                   colorScheme="none"
                   mr={3}
