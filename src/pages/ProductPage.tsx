@@ -42,7 +42,7 @@ export default function ProductPage() {
 
   return (
     <Box px="6rem">
-      <Flex mt="3rem">
+      <Flex mt="3rem" justify="center">
         <Flex direction="row" gap="2rem" mr="2rem">
           <Flex direction="column" gap="2rem">
             <Image
@@ -92,17 +92,17 @@ export default function ProductPage() {
           />
         </Flex>
         <Flex direction="column">
+          <Text fontSize="4xl" fontWeight="bold" color="#303030" mb="0.5rem">
+            {product?.name}
+          </Text>
           <Flex maxH="4rem" mb="1.5rem">
             <Rating
-              style={{ maxWidth: 250 }}
+              style={{ maxWidth: 150 }}
               value={rating}
               onChange={setRating}
               itemStyles={myStyles}
             />
           </Flex>
-          <Text fontSize="4xl" fontWeight="bold" color="#303030" mb="0.5rem">
-            {product?.name}
-          </Text>
           <Flex gap="3rem" direction="row">
             <Flex direction="row" align="center" gap="1rem">
               <MdPix color="#a6a6a6" />

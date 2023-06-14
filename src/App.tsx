@@ -9,6 +9,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import ProductPage from "./pages/ProductPage";
 import Footer from "./Components/Footer";
 import CartContextProvider from "./Contexts/CartContext";
+import FavContextProvider, { FavContext } from "./Contexts/FavCotenxt";
 
 function App() {
   const router = createBrowserRouter([
@@ -42,18 +43,20 @@ function App() {
       <ChakraProvider theme={defaultTheme}>
         <AuthContextProvider>
           <CartContextProvider>
-            <Flex
-              w="full"
-              h="100%"
-              minH="100vh"
-              bgImage={bg}
-              bgRepeat="no-repeat"
-              bgSize="cover"
-              direction="column"
-              justify="space-between"
-            >
-              <RouterProvider router={router} />
-            </Flex>
+            <FavContextProvider>
+              <Flex
+                w="full"
+                h="100%"
+                minH="100vh"
+                bgImage={bg}
+                bgRepeat="no-repeat"
+                bgSize="cover"
+                direction="column"
+                justify="space-between"
+              >
+                <RouterProvider router={router} />
+              </Flex>
+            </FavContextProvider>
           </CartContextProvider>
         </AuthContextProvider>
       </ChakraProvider>

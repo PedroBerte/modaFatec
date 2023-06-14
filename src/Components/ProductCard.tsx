@@ -24,7 +24,13 @@ export default function ProductCard(props: ProductCardProps) {
       }}
       onClick={() => navigate(`/Produto/${props.id}`)}
     >
-      <Image width="240px" src={props.src} borderRadius="5px" />
+      <Image
+        width="240px"
+        height="320px"
+        objectFit="cover"
+        src={props.src}
+        borderRadius="5px"
+      />
       <Flex mt="1rem" direction="column" align="center">
         <Text>{props.name}</Text>
         <Text>R$ {props.price}</Text>

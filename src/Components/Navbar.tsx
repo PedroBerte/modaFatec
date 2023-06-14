@@ -87,9 +87,12 @@ export default function Navbar() {
             <Popover>
               <PopoverTrigger>
                 <Flex
+                  _hover={{
+                    transform: "scale(1.01)",
+                    transition: "all 0.1s ease-in-out",
+                  }}
                   gap="0.5rem"
                   align="center"
-                  _hover={{ textDecoration: "underline" }}
                   cursor="pointer"
                 >
                   <Avatar
