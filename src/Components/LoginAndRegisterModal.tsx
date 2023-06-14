@@ -45,7 +45,7 @@ type LoginModalProps = {
 
 export default function LoginModal(props: LoginModalProps) {
   const toast = useToast();
-  const { registerNewUser, loginUser } = useAuthContext();
+  const { registerNewUser, loginUser, isLoading } = useAuthContext();
   const { user, setUser, isLogged, setIsLogged } = useAuthContext();
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
@@ -143,6 +143,7 @@ export default function LoginModal(props: LoginModalProps) {
                   onClick={() =>
                     loginUser(loginEmail, loginPassword, props.onClose)
                   }
+                  isLoading={isLoading}
                 >
                   Iniciar Sessão
                 </Button>
@@ -262,6 +263,7 @@ export default function LoginModal(props: LoginModalProps) {
                   w="full"
                   colorScheme="none"
                   mr={3}
+                  isLoading={isLoading}
                 >
                   Iniciar Sessão
                 </Button>
