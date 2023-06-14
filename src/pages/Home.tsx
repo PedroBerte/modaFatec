@@ -20,8 +20,10 @@ import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../services/firebaseConfig";
 import { ProductTypes } from "../types/ProductTypes";
+import { useAuthContext } from "../Contexts/AuthContext";
 
 export default function Home() {
+  const { addedItems } = useAuthContext();
   const [products, setProducts] = useState<ProductTypes[] | null>(null);
   const [sortedProducts, setSortedProducts] = useState([] as ProductTypes[]);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +49,7 @@ export default function Home() {
         });
     }
     getProducts();
-  }, []);
+  }, [addedItems]);
 
   function handleSortProducts(e: string) {
     setSortOption(e);

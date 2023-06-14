@@ -22,6 +22,7 @@ import { ShoppingCartSimple } from "@phosphor-icons/react";
 import { useCart } from "../Contexts/CartContext";
 import { BsSuitHeartFill } from "react-icons/bs";
 import { useFav } from "../Contexts/FavCotenxt";
+import { formatInputCurrency } from "../scripts/FormatCurrency";
 const myStyles = {
   itemShapes: ThinStar,
   activeFillColor: "#ffb700",
@@ -119,14 +120,16 @@ export default function ProductPage() {
               <MdPix color="#a6a6a6" />
               <Box>
                 <Text fontSize="lg">
-                  R${" "}
                   {(
-                    parseFloat(
-                      product?.saleValue == undefined
-                        ? "0"
-                        : product.saleValue.replace(",", ".")
+                    Number(
+                      product?.saleValue?.replace(".", "").replace(",", ".")
                     ) * 0.9
-                  ).toFixed(2)}
+                  ).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
                 </Text>
                 <Text fontSize="sm">NO PIX</Text>
               </Box>
@@ -135,22 +138,27 @@ export default function ProductPage() {
               <MdCreditCard color="#a6a6a6" />
               <Box>
                 <Text fontSize="lg">
-                  R${" "}
-                  {parseFloat(
-                    product?.saleValue == undefined
-                      ? "0"
-                      : product.saleValue.replace(",", ".")
-                  ).toFixed(2)}
+                  {Number(
+                    product?.saleValue?.replace(".", "").replace(",", ".")
+                  ).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
                 </Text>
                 <Text fontSize="sm">
                   ATÉ 3x DE{" "}
                   {(
-                    parseFloat(
-                      product?.saleValue == undefined
-                        ? "0"
-                        : product.saleValue.replace(",", ".")
+                    Number(
+                      product?.saleValue?.replace(".", "").replace(",", ".")
                     ) / 3
-                  ).toFixed(2)}
+                  ).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
                 </Text>
               </Box>
             </Flex>
@@ -204,7 +212,7 @@ export default function ProductPage() {
                 </Button>
               ))}
             </Flex>
-            <Flex gap="10px">
+            <Flex gap="10px" mt="1rem">
               <Button
                 gap="12px"
                 bg="linear-gradient(90deg, #e4a7cf 0%, rgba(255, 52, 137, 1) 50%);"

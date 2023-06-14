@@ -47,7 +47,7 @@ export function FavsDrawer({
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Meu Favoritos</DrawerHeader>
+        <DrawerHeader>Meus Favoritos</DrawerHeader>
 
         <DrawerBody>
           <Flex direction="column" gap="12px">

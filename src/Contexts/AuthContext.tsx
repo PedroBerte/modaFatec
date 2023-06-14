@@ -13,6 +13,8 @@ import { useToast } from "@chakra-ui/react";
 
 type AuthContextProps = {
   user: UserTypes | null | undefined;
+  setAddedItems: React.Dispatch<React.SetStateAction<boolean>>;
+  addedItems: boolean;
   setUser: React.Dispatch<React.SetStateAction<UserTypes | null | undefined>>;
   setIsLogged: React.Dispatch<React.SetStateAction<boolean>>;
   isLogged: boolean;
@@ -46,6 +48,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
   const [user, setUser] = useState<UserTypes | null>();
   const [isLogged, setIsLogged] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [addedItems, setAddedItems] = useState<boolean>(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -366,6 +369,8 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
         loginUser,
         logoutUser,
         isLoading,
+        setAddedItems,
+        addedItems,
       }}
     >
       {props.children}

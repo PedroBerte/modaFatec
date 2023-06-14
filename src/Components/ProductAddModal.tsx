@@ -31,6 +31,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db, storage } from "../services/firebaseConfig";
 import { formatInputCurrency } from "../scripts/FormatCurrency";
 import { getStorage, ref, uploadString } from "firebase/storage";
+import { useAuthContext } from "../Contexts/AuthContext";
 
 type ProductAddModalProps = {
   onOpen: () => void;
@@ -40,6 +41,7 @@ type ProductAddModalProps = {
 
 export default function ProductAddModal(props: ProductAddModalProps) {
   const toast = useToast();
+  const { addedItems, setAddedItems } = useAuthContext();
   const [principalFoto, setPrincipalFoto] = useState<FileTypes | null>();
   const [segundaFoto, setSegundaFoto] = useState<FileTypes | null>();
   const [terceiraFoto, setTerceiraFoto] = useState<FileTypes | null>();
@@ -189,6 +191,7 @@ export default function ProductAddModal(props: ProductAddModalProps) {
         });
         setIsUploading(false);
       });
+    setAddedItems(!addedItems);
   }
 
   useMemo(() => {
@@ -234,15 +237,12 @@ export default function ProductAddModal(props: ProductAddModalProps) {
             <FormControl>
               <Text mb="8px">Categoria</Text>
               <InputGroup>
-                <Select
-                  placeholder="Selecione"
+                <Input
                   focusBorderColor="#BE0C6C"
+                  type="text"
+                  placeholder="Categoria"
                   onChange={(e) => setCategoria(e.target.value)}
-                >
-                  <option value="option1">Longo</option>
-                  <option value="option2">Curto</option>
-                  <option value="option3">sei lá</option>
-                </Select>
+                />
               </InputGroup>
             </FormControl>
             <FormControl>

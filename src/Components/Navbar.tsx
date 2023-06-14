@@ -139,32 +139,7 @@ export default function Navbar() {
                     </PopoverHeader>
                     <Flex
                       align="center"
-                      mt={3}
-                      cursor="pointer"
-                      _hover={{
-                        transform: "size: 1.1",
-                        textDecoration: "underline",
-                      }}
-                    >
-                      <User size={20} />
-                      <Text ml="0.5rem">Informações da conta</Text>
-                    </Flex>
-                    <Flex
-                      align="center"
-                      mt={2.5}
-                      cursor="pointer"
-                      _hover={{
-                        transform: "size: 1.1",
-                        textDecoration: "underline",
-                      }}
-                      onClick={() => onAddProductOpen()}
-                    >
-                      <Handbag size={20} />
-                      <Text ml="0.5rem">Adicionar um novo Produto</Text>
-                    </Flex>
-                    <Flex
-                      align="center"
-                      mt={2.5}
+                      mt={4}
                       cursor="pointer"
                       _hover={{
                         transform: "size: 1.1",
@@ -175,6 +150,21 @@ export default function Navbar() {
                       <Heart size={20} />
                       <Text ml="0.5rem">Itens favoritos</Text>
                     </Flex>
+                    {user?.role === "AD" && (
+                      <Flex
+                        align="center"
+                        mt={2.5}
+                        cursor="pointer"
+                        _hover={{
+                          transform: "size: 1.1",
+                          textDecoration: "underline",
+                        }}
+                        onClick={() => onAddProductOpen()}
+                      >
+                        <Handbag size={20} />
+                        <Text ml="0.5rem">Adicionar um novo Produto</Text>
+                      </Flex>
+                    )}
                     <Flex
                       justify="flex-end"
                       direction="row"
