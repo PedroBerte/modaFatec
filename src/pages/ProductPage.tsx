@@ -10,8 +10,8 @@ import { db } from "../services/firebaseConfig";
 import { ProductTypes } from "../types/ProductTypes";
 import { MdCheck, MdCreditCard, MdPix, MdTabUnselected } from "react-icons/md";
 
-import { CirclePicker } from "react-color";
-import { CheckCircle } from "@phosphor-icons/react";
+import { ShoppingCartSimple } from "@phosphor-icons/react";
+import { useCart } from "../Contexts/CartContext";
 const myStyles = {
   itemShapes: ThinStar,
   activeFillColor: "#ffb700",
@@ -20,6 +20,7 @@ const myStyles = {
 
 export default function ProductPage() {
   let { productId } = useParams();
+  const { addProduct } = useCart();
 
   const [product, setProduct] = useState({} as ProductTypes);
   const [rating, setRating] = useState(5);
@@ -192,6 +193,16 @@ export default function ProductPage() {
                 </Button>
               ))}
             </Flex>
+            <Button
+              gap="12px"
+              bg="linear-gradient(90deg, #e4a7cf 0%, rgba(255, 52, 137, 1) 50%);"
+              color="white"
+              colorScheme="none"
+              onClick={() => addProduct(product)}
+            >
+              <ShoppingCartSimple />
+              Adicionar ao carrinho
+            </Button>
           </Flex>
         </Flex>
       </Flex>
