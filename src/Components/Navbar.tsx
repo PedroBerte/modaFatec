@@ -34,6 +34,7 @@ import { useNavigate } from "react-router-dom";
 import { CartItem } from "./CartItem";
 import { Cart } from "./Cart";
 import { useCart } from "../Contexts/CartContext";
+import { FavsDrawer } from "./FavsDrawer";
 
 export default function Navbar() {
   const toast = useToast();
@@ -56,6 +57,12 @@ export default function Navbar() {
     isOpen: isDrawerOpen,
     onOpen: onDrawerOpen,
     onClose: onDrawerClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isFavDrawerOpen,
+    onOpen: onFavDrawerOpen,
+    onClose: onFavDrawerClose,
   } = useDisclosure();
 
   const { cart } = useCart();
@@ -160,6 +167,7 @@ export default function Navbar() {
                         transform: "size: 1.1",
                         textDecoration: "underline",
                       }}
+                      onClick={() => onFavDrawerOpen()}
                     >
                       <Heart size={20} />
                       <Text ml="0.5rem">Itens favoritos</Text>
@@ -233,6 +241,12 @@ export default function Navbar() {
         isDrawerOpen={isDrawerOpen}
         onDrawerOpen={onDrawerOpen}
         onDrawerClose={onDrawerClose}
+      />
+
+      <FavsDrawer
+        isDrawerOpen={isFavDrawerOpen}
+        onDrawerOpen={onFavDrawerOpen}
+        onDrawerClose={onFavDrawerClose}
       />
     </Box>
   );

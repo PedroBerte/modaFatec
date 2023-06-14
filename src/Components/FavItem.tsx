@@ -1,14 +1,22 @@
 import { Button, Flex, Image, Text } from "@chakra-ui/react";
 import { ProductTypes } from "../types/ProductTypes";
 import { useCart } from "../Contexts/CartContext";
+import { useFav } from "../Contexts/FavCotenxt";
+import { useNavigate } from "react-router-dom";
 
-type CartItemProps = {
+type FavItemProps = {
   product: ProductTypes;
-  amount: number;
+  onClose: () => void;
 };
 
-export function CartItem({ product, amount }: CartItemProps) {
-  const { removeProduct } = useCart();
+export function FavItem({ product, onClose }: FavItemProps) {
+  const navigate = useNavigate();
+  const { removeFav } = useFav();
+
+  function handleClickPhoto() {
+    navigate(`/Produto/${product.id}`);
+    onClose();
+  }
 
   return (
     <Flex
@@ -29,6 +37,8 @@ export function CartItem({ product, amount }: CartItemProps) {
         w="72px"
         h="72px"
         objectFit="cover"
+        cursor="pointer"
+        onClick={() => handleClickPhoto()}
       />
       <Flex direction="column" flex="1">
         <Text
@@ -42,7 +52,6 @@ export function CartItem({ product, amount }: CartItemProps) {
         >
           {product.name}
         </Text>
-        <Text fontSize="0.8rem">Quantidade: {amount}</Text>
         <Text fontSize="0.8rem">Valor: R$ {product.saleValue}</Text>
       </Flex>
 
@@ -50,7 +59,7 @@ export function CartItem({ product, amount }: CartItemProps) {
         bg="transparent"
         colorScheme="none"
         color="black"
-        onClick={() => removeProduct(product.id)}
+        onClick={() => removeFav(product)}
       >
         Remover
       </Button>

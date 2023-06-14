@@ -23,7 +23,9 @@ import { ProductTypes } from "../types/ProductTypes";
 
 export default function Home() {
   const [products, setProducts] = useState<ProductTypes[] | null>(null);
+  const [sortedProducts, setSortedProducts] = useState([] as ProductTypes[]);
   const [isLoading, setIsLoading] = useState(false);
+  const [sortOption, setSortOption] = useState("");
 
   useEffect(() => {
     async function getProducts() {
@@ -31,6 +33,9 @@ export default function Home() {
       await getDocs(collection(db, "products"))
         .then((querySnapshot) => {
           setProducts(
+            querySnapshot.docs.map((doc) => doc.data()) as ProductTypes[]
+          );
+          setSortedProducts(
             querySnapshot.docs.map((doc) => doc.data()) as ProductTypes[]
           );
         })
@@ -44,6 +49,31 @@ export default function Home() {
     getProducts();
   }, []);
 
+  function handleSortProducts(e: string) {
+    setSortOption(e);
+    if (e === "crescent") {
+      setSortedProducts(
+        [...sortedProducts].sort((a, b) => a.name.localeCompare(b.name))
+      );
+    } else {
+      setSortedProducts(
+        [...sortedProducts].sort((a, b) => b.name.localeCompare(a.name))
+      );
+    }
+  }
+
+  function filterProducts(e: string) {
+    if (e === "") {
+      setSortedProducts(products!);
+    } else {
+      setSortedProducts(
+        products!.filter((product) =>
+          product.name.toLocaleLowerCase().includes(e.toLocaleLowerCase())
+        )
+      );
+    }
+  }
+
   return (
     <Flex direction="column" justify="center" px="6rem">
       <Flex mt="1rem" gap="3rem" justify="flex-end" align="center">
@@ -52,7 +82,12 @@ export default function Home() {
             <InputRightElement pointerEvents="none">
               <MagnifyingGlass size={24} />
             </InputRightElement>
-            <Input variant="flushed" type="text" placeholder="Pesquisar" />
+            <Input
+              onChange={(e) => filterProducts(e.target.value)}
+              variant="flushed"
+              type="text"
+              placeholder="Pesquisar"
+            />
           </InputGroup>
         </Flex>
         <Select
@@ -60,9 +95,11 @@ export default function Home() {
           placeholder="Ordem"
           w="auto"
           textAlign="center"
+          onChange={(e) => handleSortProducts(e.target.value)}
+          value={sortOption}
         >
-          <option value="option1">A - Z</option>
-          <option value="option2">Z - A</option>
+          <option value="crescent">A - Z</option>
+          <option value="decrecent">Z - A</option>
         </Select>
       </Flex>
       {isLoading ? (
@@ -103,7 +140,7 @@ export default function Home() {
               : "center"
           }
         >
-          {products?.map((product, index) => (
+          {sortedProducts?.map((product, index) => (
             <ProductCard
               id={product.id}
               key={index}

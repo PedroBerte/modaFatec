@@ -1,37 +1,62 @@
 import {
+  Box,
   Button,
   Drawer,
   DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  useDisclosure,
-  Input,
+  Flex,
+  Text,
+  Tooltip,
 } from "@chakra-ui/react";
-import React from "react";
+import { CartItem } from "./CartItem";
+import { useCart } from "../Contexts/CartContext";
+import { useAuthContext } from "../Contexts/AuthContext";
+import { useFav } from "../Contexts/FavCotenxt";
+import { FavItem } from "./FavItem";
+import { useMemo } from "react";
 
-type FavDrawerProps = {
-  isOpen: boolean;
-  onOpen: () => void;
-  onClose: () => void;
+type FavProps = {
+  isDrawerOpen: boolean;
+  onDrawerClose: () => void;
+  onDrawerOpen: () => void;
 };
 
-export default function FavsDrawer(props: FavDrawerProps) {
-  return (
-    <>
-      <Drawer isOpen={props.isOpen} placement="right" onClose={props.onClose}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
+export const { format: formatPrice } = new Intl.NumberFormat("pt-br", {
+  style: "currency",
+  currency: "BRL",
+});
 
-          <DrawerFooter>
-            <Button colorScheme="blue">Save</Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    </>
+export function FavsDrawer({
+  isDrawerOpen,
+  onDrawerClose,
+  onDrawerOpen,
+}: FavProps) {
+  const { favs } = useFav();
+
+  return (
+    <Drawer
+      isOpen={isDrawerOpen}
+      placement="right"
+      onClose={onDrawerClose}
+      size="sm"
+    >
+      <DrawerOverlay />
+      <DrawerContent>
+        <DrawerCloseButton />
+        <DrawerHeader>Meu Favoritos</DrawerHeader>
+
+        <DrawerBody>
+          <Flex direction="column" gap="12px">
+            {favs.map((fav) => {
+              return <FavItem onClose={() => onDrawerClose()} product={fav} />;
+            })}
+          </Flex>
+        </DrawerBody>
+      </DrawerContent>
+    </Drawer>
   );
 }

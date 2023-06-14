@@ -4,8 +4,8 @@ import { useToast } from "@chakra-ui/react";
 
 type FavContextProps = {
   favs: ProductTypes[];
-  addProduct: (product: ProductTypes) => void;
-  removeProduct: (product: ProductTypes) => void;
+  addFav: (product: ProductTypes) => void;
+  removeFav: (product: ProductTypes) => void;
 };
 
 interface FavContextProviderProps {
@@ -26,7 +26,7 @@ export default function FavContextProvider(props: FavContextProviderProps) {
     return [];
   });
 
-  const addProduct = async (product: ProductTypes) => {
+  const addFav = async (product: ProductTypes) => {
     try {
       const updatedFav = [...favs];
       const productExists = updatedFav.find(
@@ -62,7 +62,7 @@ export default function FavContextProvider(props: FavContextProviderProps) {
     }
   };
 
-  const removeProduct = async (product: ProductTypes) => {
+  const removeFav = async (product: ProductTypes) => {
     try {
       const updatedFav = [...favs];
       const productExists = updatedFav.find(
@@ -97,7 +97,7 @@ export default function FavContextProvider(props: FavContextProviderProps) {
   };
 
   return (
-    <FavContext.Provider value={{ favs, addProduct, removeProduct }}>
+    <FavContext.Provider value={{ favs, addFav, removeFav }}>
       {props.children}
     </FavContext.Provider>
   );

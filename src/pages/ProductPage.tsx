@@ -1,4 +1,12 @@
-import { Flex, Text, Image, Box, Button, Divider } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Image,
+  Box,
+  Button,
+  Divider,
+  Tooltip,
+} from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -12,6 +20,8 @@ import { MdCheck, MdCreditCard, MdPix, MdTabUnselected } from "react-icons/md";
 
 import { ShoppingCartSimple } from "@phosphor-icons/react";
 import { useCart } from "../Contexts/CartContext";
+import { BsSuitHeartFill } from "react-icons/bs";
+import { useFav } from "../Contexts/FavCotenxt";
 const myStyles = {
   itemShapes: ThinStar,
   activeFillColor: "#ffb700",
@@ -21,6 +31,7 @@ const myStyles = {
 export default function ProductPage() {
   let { productId } = useParams();
   const { addProduct } = useCart();
+  const { addFav, removeFav, favs } = useFav();
 
   const [product, setProduct] = useState({} as ProductTypes);
   const [rating, setRating] = useState(5);
@@ -193,16 +204,35 @@ export default function ProductPage() {
                 </Button>
               ))}
             </Flex>
-            <Button
-              gap="12px"
-              bg="linear-gradient(90deg, #e4a7cf 0%, rgba(255, 52, 137, 1) 50%);"
-              color="white"
-              colorScheme="none"
-              onClick={() => addProduct(product)}
-            >
-              <ShoppingCartSimple />
-              Adicionar ao carrinho
-            </Button>
+            <Flex gap="10px">
+              <Button
+                gap="12px"
+                bg="linear-gradient(90deg, #e4a7cf 0%, rgba(255, 52, 137, 1) 50%);"
+                color="white"
+                colorScheme="none"
+                onClick={() => addProduct(product)}
+              >
+                <ShoppingCartSimple />
+                Adicionar ao carrinho
+              </Button>
+              <Button
+                gap="12px"
+                bg="#d6d6d6"
+                color="white"
+                colorScheme="none"
+                onClick={
+                  !!favs.find((x) => x.id === product.id)
+                    ? () => removeFav(product)
+                    : () => addFav(product)
+                }
+              >
+                <BsSuitHeartFill
+                  color={
+                    !!favs.find((x) => x.id === product.id) ? "red" : "white"
+                  }
+                />
+              </Button>
+            </Flex>
           </Flex>
         </Flex>
       </Flex>
