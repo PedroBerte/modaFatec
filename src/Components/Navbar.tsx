@@ -3,19 +3,15 @@ import {
   Text,
   Image,
   useDisclosure,
-  Toast,
   useToast,
   Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverHeader,
   PopoverBody,
-  PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverAnchor,
   Portal,
-  Button,
   Box,
 } from "@chakra-ui/react";
 import React from "react";
@@ -34,6 +30,8 @@ import { useAuthContext } from "../Contexts/AuthContext";
 import { Avatar, AvatarBadge, AvatarGroup } from "@chakra-ui/react";
 import ProductAddModal from "./ProductAddModal";
 import { useNavigate } from "react-router-dom";
+import { CartItem } from "./CartItem";
+import { Cart } from "./Cart";
 
 export default function Navbar() {
   const toast = useToast();
@@ -51,6 +49,14 @@ export default function Navbar() {
     onOpen: onAddProductOpen,
     onClose: onAddProductClose,
   } = useDisclosure();
+
+  const {
+    isOpen: isDrawerOpen,
+    onOpen: onDrawerOpen,
+    onClose: onDrawerClose,
+  } = useDisclosure();
+
+  const btnRef = React.useRef();
 
   const { user, isLogged } = useAuthContext();
 
@@ -190,6 +196,7 @@ export default function Navbar() {
             transform: "scale(1.07)",
             transition: "all 0.1s ease-in-out",
           }}
+          onClick={onDrawerOpen}
         >
           <Text mr="5px">0</Text>
           <Text mr="15px">Itens</Text>
@@ -207,6 +214,12 @@ export default function Navbar() {
         isOpen={isAddProductOpen}
         onOpen={onAddProductOpen}
         onClose={onAddProductClose}
+      />
+
+      <Cart
+        isDrawerOpen={isDrawerOpen}
+        onDrawerOpen={onDrawerOpen}
+        onDrawerClose={onDrawerClose}
       />
     </>
   );
