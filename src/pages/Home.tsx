@@ -8,6 +8,8 @@ import {
   InputLeftElement,
   InputRightElement,
   SimpleGrid,
+  Skeleton,
+  SkeletonText,
   Spinner,
   Text,
 } from "@chakra-ui/react";
@@ -64,14 +66,31 @@ export default function Home() {
         </Select>
       </Flex>
       {isLoading ? (
-        <Flex justify="center" align="center" h="200px">
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
-          />
+        <Flex mt="1.8rem" wrap="wrap" gap="50px">
+          <Flex direction="column" justify="center">
+            <Skeleton width="240px" height="320px" />
+            <SkeletonText mt="4" noOfLines={2} spacing="4" skeletonHeight="2" />
+          </Flex>
+          <Flex direction="column" justify="center">
+            <Skeleton width="240px" height="320px" />
+            <SkeletonText mt="4" noOfLines={2} spacing="4" skeletonHeight="2" />
+          </Flex>
+          <Flex direction="column" justify="center">
+            <Skeleton width="240px" height="320px" />
+            <SkeletonText mt="4" noOfLines={2} spacing="4" skeletonHeight="2" />
+          </Flex>
+          <Flex direction="column" justify="center">
+            <Skeleton width="240px" height="320px" />
+            <SkeletonText mt="4" noOfLines={2} spacing="4" skeletonHeight="2" />
+          </Flex>
+          <Flex direction="column" justify="center">
+            <Skeleton width="240px" height="320px" />
+            <SkeletonText mt="4" noOfLines={2} spacing="4" skeletonHeight="2" />
+          </Flex>
+          <Flex direction="column" justify="center">
+            <Skeleton width="240px" height="320px" />
+            <SkeletonText mt="4" noOfLines={2} spacing="4" skeletonHeight="2" />
+          </Flex>
         </Flex>
       ) : (
         <Flex

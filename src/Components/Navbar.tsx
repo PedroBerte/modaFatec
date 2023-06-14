@@ -94,7 +94,15 @@ export default function Navbar() {
           {isLogged ? (
             <Popover>
               <PopoverTrigger>
-                <Flex gap="0.5rem" align="center" cursor="pointer">
+                <Flex
+                  _hover={{
+                    transform: "scale(1.01)",
+                    transition: "all 0.1s ease-in-out",
+                  }}
+                  gap="0.5rem"
+                  align="center"
+                  cursor="pointer"
+                >
                   <Avatar
                     textDecoration="none"
                     size="sm"
