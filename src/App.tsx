@@ -4,11 +4,11 @@ import Home from "./pages/Home";
 import Navbar from "./Components/Navbar";
 import { defaultTheme } from "./themes/DefaultTheme";
 import bg from "./images/background.png";
-import Logo from "./images/logo.png";
 import AuthContextProvider from "./Contexts/AuthContext";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import ProductPage from "./pages/ProductPage";
 import Footer from "./Components/Footer";
+import CartContextProvider from "./Contexts/CartContext";
 
 function App() {
   const router = createBrowserRouter([
@@ -41,18 +41,20 @@ function App() {
     <div className="App">
       <ChakraProvider theme={defaultTheme}>
         <AuthContextProvider>
-          <Flex
-            w="full"
-            h="100%"
-            minH="100vh"
-            bgImage={bg}
-            bgRepeat="no-repeat"
-            bgSize="cover"
-            direction="column"
-            justify="space-between"
-          >
-            <RouterProvider router={router} />
-          </Flex>
+          <CartContextProvider>
+            <Flex
+              w="full"
+              h="100%"
+              minH="100vh"
+              bgImage={bg}
+              bgRepeat="no-repeat"
+              bgSize="cover"
+              direction="column"
+              justify="space-between"
+            >
+              <RouterProvider router={router} />
+            </Flex>
+          </CartContextProvider>
         </AuthContextProvider>
       </ChakraProvider>
     </div>
