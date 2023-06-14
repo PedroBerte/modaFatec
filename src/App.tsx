@@ -1,4 +1,4 @@
-import { Box, ChakraProvider } from "@chakra-ui/react";
+import { Box, ChakraProvider, Flex } from "@chakra-ui/react";
 import React from "react";
 import Home from "./pages/Home";
 import Navbar from "./Components/Navbar";
@@ -16,8 +16,10 @@ function App() {
       path: "/",
       element: (
         <>
-          <Navbar />
-          <Home />
+          <Box>
+            <Navbar />
+            <Home />
+          </Box>
           <Footer />
         </>
       ),
@@ -26,8 +28,10 @@ function App() {
       path: "/Produto/:productId",
       element: (
         <>
-          <Navbar />
-          <ProductPage />
+          <Box>
+            <Navbar />
+            <ProductPage />
+          </Box>
           <Footer />
         </>
       ),
@@ -37,17 +41,18 @@ function App() {
     <div className="App">
       <ChakraProvider theme={defaultTheme}>
         <AuthContextProvider>
-          <Box
+          <Flex
             w="full"
             h="100%"
             minH="100vh"
-            px="6rem"
             bgImage={bg}
             bgRepeat="no-repeat"
             bgSize="cover"
+            direction="column"
+            justify="space-between"
           >
             <RouterProvider router={router} />
-          </Box>
+          </Flex>
         </AuthContextProvider>
       </ChakraProvider>
     </div>

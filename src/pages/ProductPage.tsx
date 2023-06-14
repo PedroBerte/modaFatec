@@ -40,8 +40,7 @@ export default function ProductPage() {
   }, [productId]);
 
   return (
-    <>
-      <Divider mt="1rem" />
+    <Box px="6rem">
       <Flex mt="3rem">
         <Flex direction="row" gap="2rem" mr="2rem">
           <Flex direction="column" gap="2rem">
@@ -196,10 +195,10 @@ export default function ProductPage() {
           </Flex>
         </Flex>
       </Flex>
-      <Flex direction="column">
+      <Flex direction="column" mb="2rem">
         <Flex
           direction="column"
-          mt="2rem"
+          mt="3rem"
           mb="1rem"
           gap="0.5rem"
           align="center"
@@ -213,6 +212,6 @@ export default function ProductPage() {
           <Text px="20%">{product?.description}</Text>
         </Box>
       </Flex>
-    </>
+    </Box>
   );
 }

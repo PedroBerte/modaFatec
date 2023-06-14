@@ -2,11 +2,13 @@ import {
   Box,
   Divider,
   Flex,
+  Grid,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
   SimpleGrid,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import { Select } from "@chakra-ui/react";
@@ -19,19 +21,29 @@ import { ProductTypes } from "../types/ProductTypes";
 
 export default function Home() {
   const [products, setProducts] = useState<ProductTypes[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     async function getProducts() {
-      const querySnapshot = await getDocs(collection(db, "products"));
-      setProducts(
-        querySnapshot.docs.map((doc) => doc.data()) as ProductTypes[]
-      );
+      setIsLoading(true);
+      await getDocs(collection(db, "products"))
+        .then((querySnapshot) => {
+          setProducts(
+            querySnapshot.docs.map((doc) => doc.data()) as ProductTypes[]
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
     getProducts();
   }, []);
 
   return (
-    <Flex direction="column" justify="center">
-      <Divider />
+    <Flex direction="column" justify="center" px="6rem">
       <Flex mt="1rem" gap="3rem" justify="flex-end" align="center">
         <Flex align="center">
           <InputGroup>
@@ -51,17 +63,38 @@ export default function Home() {
           <option value="option2">Z - A</option>
         </Select>
       </Flex>
-      <SimpleGrid mt="1.8rem" minChildWidth="240px" spacing="40px">
-        {products?.map((product, index) => (
-          <ProductCard
-            id={product.id}
-            key={index}
-            name={product.name}
-            price={product.saleValue}
-            src={`https://firebasestorage.googleapis.com/v0/b/${process.env.REACT_APP_FIREBASE_STORAGE_BUCKET}/o/products%2F${product.id}%2F1?alt=media&token=c707f07d-ce2c-490c-bb9a-4d1936bf6504&_gl=1*1xt8alz*_ga*ODgyMjQzOTY2LjE2ODYwODM5Mjc.*_ga_CW55HF8NVT*MTY4NjYxNTg0Mi43LjEuMTY4NjYyMzE2OC4wLjAuMA..`}
+      {isLoading ? (
+        <Flex justify="center" align="center" h="200px">
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
           />
-        ))}
-      </SimpleGrid>
+        </Flex>
+      ) : (
+        <Flex
+          mt="1.8rem"
+          wrap="wrap"
+          gap="50px"
+          justify={
+            products != undefined && products?.length < 6
+              ? "flex-start"
+              : "center"
+          }
+        >
+          {products?.map((product, index) => (
+            <ProductCard
+              id={product.id}
+              key={index}
+              name={product.name}
+              price={product.saleValue}
+              src={`https://firebasestorage.googleapis.com/v0/b/${process.env.REACT_APP_FIREBASE_STORAGE_BUCKET}/o/products%2F${product.id}%2F1?alt=media&token=c707f07d-ce2c-490c-bb9a-4d1936bf6504&_gl=1*1xt8alz*_ga*ODgyMjQzOTY2LjE2ODYwODM5Mjc.*_ga_CW55HF8NVT*MTY4NjYxNTg0Mi43LjEuMTY4NjYyMzE2OC4wLjAuMA..`}
+            />
+          ))}
+        </Flex>
+      )}
     </Flex>
   );
 }

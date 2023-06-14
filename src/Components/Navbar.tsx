@@ -17,6 +17,7 @@ import {
   Portal,
   Button,
   Box,
+  Divider,
 } from "@chakra-ui/react";
 import React from "react";
 import Logo from "./../images/logo.png";
@@ -55,8 +56,8 @@ export default function Navbar() {
   const { user, isLogged } = useAuthContext();
 
   return (
-    <>
-      <Flex as="nav" py="1rem" align="center" justify="space-between">
+    <Box>
+      <Flex as="nav" py="1rem" align="center" justify="space-between" px="6rem">
         <Image
           w="180px"
           src={Logo}
@@ -197,6 +198,8 @@ export default function Navbar() {
         </Flex>
       </Flex>
 
+      <Divider mx="auto" w="90%" />
+
       <LoginModal
         isOpen={isLoginRegisterOpen}
         onOpen={onLoginRegisterOpen}
@@ -208,6 +211,6 @@ export default function Navbar() {
         onOpen={onAddProductOpen}
         onClose={onAddProductClose}
       />
-    </>
+    </Box>
   );
 }
