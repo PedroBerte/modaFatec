@@ -11,6 +11,7 @@ type CartContextProps = {
   cart: ProductCartTypes[];
   addProduct: (product: ProductTypes) => void;
   removeProduct: (productId: string) => void;
+  checkout: () => Promise<void>;
 };
 
 interface CartContextProviderProps {
@@ -100,8 +101,18 @@ export default function CartContextProvider(props: CartContextProviderProps) {
     }
   };
 
+  function checkout() {
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        setCart([]);
+        localStorage.removeItem("@ModaEvangelica:cart");
+        resolve();
+      }, 2000);
+    });
+  }
+
   return (
-    <CartContext.Provider value={{ cart, addProduct, removeProduct }}>
+    <CartContext.Provider value={{ cart, addProduct, removeProduct, checkout }}>
       {props.children}
     </CartContext.Provider>
   );

@@ -85,6 +85,7 @@ export default function Navbar() {
             transform: "scale(1.07)",
             transition: "all 0.1s ease-in-out",
           }}
+          onClick={() => navigate("/")}
         >
           <Text>Loja</Text>
           <Box width="95%" h="2px" bg="#BE0C6C" />
@@ -108,7 +109,9 @@ export default function Navbar() {
                     name={user?.name}
                     bg="#EBC2E3"
                   />
-                  <Text>{user?.name}</Text>
+                  <Text _hover={{ textDecoration: "underline" }}>
+                    {user?.name}
+                  </Text>
                 </Flex>
               </PopoverTrigger>
               <Portal>
