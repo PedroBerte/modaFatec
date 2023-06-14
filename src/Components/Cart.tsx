@@ -10,9 +10,11 @@ import {
   DrawerOverlay,
   Flex,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import { CartItem } from "./CartItem";
 import { useCart } from "../Contexts/CartContext";
+import { useAuthContext } from "../Contexts/AuthContext";
 
 type CartProps = {
   isDrawerOpen: boolean;
@@ -27,6 +29,7 @@ export const { format: formatPrice } = new Intl.NumberFormat("pt-br", {
 
 export function Cart({ isDrawerOpen, onDrawerClose, onDrawerOpen }: CartProps) {
   const { cart } = useCart();
+  const { isLogged } = useAuthContext();
 
   const total = formatPrice(
     cart.reduce((sumTotal, productCart) => {
@@ -52,8 +55,11 @@ export function Cart({ isDrawerOpen, onDrawerClose, onDrawerOpen }: CartProps) {
 
         <DrawerBody>
           <Flex direction="column" gap="12px">
-            <CartItem />
-            <CartItem />
+            {cart.map((cartItem) => {
+              return (
+                <CartItem product={cartItem.product} amount={cartItem.amount} />
+              );
+            })}
           </Flex>
         </DrawerBody>
 
@@ -62,13 +68,28 @@ export function Cart({ isDrawerOpen, onDrawerClose, onDrawerOpen }: CartProps) {
             <Text fontWeight="bold" fontSize="1.4rem">
               Total: {total}
             </Text>
-            <Button
-              w="100%"
-              bg="linear-gradient(90deg, #e4a7cf 0%, rgba(255, 52, 137, 1) 50%);"
-              color="white"
+            <Tooltip
+              placement="top"
+              hasArrow
+              display={cart.length === 0 || !isLogged ? "block" : "none"}
+              label={
+                (cart.length === 0) == true || !isLogged
+                  ? "Faça login e adicione um produto ao carrinho"
+                  : isLogged
+                  ? "Faça login para finalizar a compra"
+                  : "Adicione um produto ao carrinho"
+              }
             >
-              Finalizar compra
-            </Button>
+              <Button
+                w="100%"
+                bg="linear-gradient(90deg, #e4a7cf 0%, rgba(255, 52, 137, 1) 50%);"
+                color="white"
+                colorScheme="none"
+                isDisabled={cart.length === 0 || !isLogged}
+              >
+                Finalizar compra
+              </Button>
+            </Tooltip>
           </Flex>
         </DrawerFooter>
       </DrawerContent>
