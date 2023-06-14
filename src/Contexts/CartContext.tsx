@@ -10,6 +10,7 @@ type ProductCartTypes = {
 type CartContextProps = {
   cart: ProductCartTypes[];
   addProduct: (product: ProductTypes) => void;
+  removeProduct: (productId: string) => void;
 };
 
 interface CartContextProviderProps {
@@ -49,13 +50,13 @@ export default function CartContextProvider(props: CartContextProviderProps) {
         updatedCart.push(newProduct);
       }
       setCart(updatedCart);
-      localStorage.setItem("@RocketShoes:cart", JSON.stringify(updatedCart));
+      localStorage.setItem("@ModaEvangelica:cart", JSON.stringify(updatedCart));
 
       toast({
         title: "Item adicionado ao carrinho com sucesso!",
         position: "top-right",
         status: "success",
-        duration: 9000,
+        duration: 1400,
         isClosable: true,
       });
     } catch {
@@ -64,7 +65,7 @@ export default function CartContextProvider(props: CartContextProviderProps) {
         description: "Tivemos um problema ao adicionar o produto ao carrinho.",
         position: "top-right",
         status: "error",
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
       });
     }
@@ -80,7 +81,10 @@ export default function CartContextProvider(props: CartContextProviderProps) {
       if (productIndex >= 0) {
         updatedCart.splice(productIndex, 1);
         setCart(updatedCart);
-        localStorage.setItem("@RocketShoes:cart", JSON.stringify(updatedCart));
+        localStorage.setItem(
+          "@ModaEvangelica:cart",
+          JSON.stringify(updatedCart)
+        );
       } else {
         throw Error();
       }
@@ -90,14 +94,14 @@ export default function CartContextProvider(props: CartContextProviderProps) {
         description: "Tivemos um problema ao remover o produto ao carrinho.",
         position: "top-right",
         status: "error",
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
       });
     }
   };
 
   return (
-    <CartContext.Provider value={{ cart, addProduct }}>
+    <CartContext.Provider value={{ cart, addProduct, removeProduct }}>
       {props.children}
     </CartContext.Provider>
   );
