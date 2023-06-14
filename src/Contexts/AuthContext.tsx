@@ -30,6 +30,7 @@ type AuthContextProps = {
     onClose: () => void
   ) => Promise<void>;
   logoutUser: () => Promise<void>;
+  isLoading: boolean;
 };
 
 interface AuthContextProviderProps {
@@ -44,6 +45,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
   const toast = useToast();
   const [user, setUser] = useState<UserTypes | null>();
   const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -66,6 +68,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
     registerConfirmPassword: string,
     onClose: () => void
   ) {
+    setIsLoading(true);
     if (registerName.length < 3) {
       toast({
         title: "Epa, tem algo errado! 🤨",
@@ -75,6 +78,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
         duration: 9000,
         isClosable: true,
       });
+      setIsLoading(false);
       return;
     }
     if (registerEmail.includes("@") === false) {
@@ -86,6 +90,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
         duration: 9000,
         isClosable: true,
       });
+      setIsLoading(false);
       return;
     }
     if (registerPhone.length < 11) {
@@ -97,6 +102,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
         duration: 9000,
         isClosable: true,
       });
+      setIsLoading(false);
       return;
     }
     if (registerPassword.length < 6) {
@@ -108,6 +114,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
         duration: 9000,
         isClosable: true,
       });
+      setIsLoading(false);
       return;
     }
     if (registerConfirmPassword !== registerPassword) {
@@ -119,6 +126,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
         duration: 9000,
         isClosable: true,
       });
+      setIsLoading(false);
       return;
     }
 
@@ -138,6 +146,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
           duration: 9000,
           isClosable: true,
         });
+        setIsLoading(false);
         onClose();
       })
       .catch((error) => {
@@ -152,6 +161,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
             duration: 9000,
             isClosable: true,
           });
+          setIsLoading(false);
           return;
         }
         if (errorCode === "auth/invalid-email") {
@@ -163,6 +173,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
             duration: 9000,
             isClosable: true,
           });
+          setIsLoading(false);
           return;
         }
         toast({
@@ -173,6 +184,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
           duration: 9000,
           isClosable: true,
         });
+        setIsLoading(false);
         return;
       });
   }
@@ -182,6 +194,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
     loginPassword: string,
     onClose: () => void
   ) {
+    setIsLoading(true);
     if (loginEmail.includes("@") === false) {
       toast({
         title: "Epa, tem algo errado! 🤨",
@@ -191,6 +204,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
         duration: 9000,
         isClosable: true,
       });
+      setIsLoading(false);
       return;
     }
     if (loginEmail === "" || loginPassword === "") {
@@ -202,6 +216,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
         duration: 9000,
         isClosable: true,
       });
+      setIsLoading(false);
       return;
     }
     signInWithEmailAndPassword(auth, loginEmail, loginPassword)
@@ -214,6 +229,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
           duration: 9000,
           isClosable: true,
         });
+        setIsLoading(false);
         onClose();
       })
       .catch((error) => {
@@ -227,20 +243,13 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
             duration: 9000,
             isClosable: true,
           });
-        } else if (errorCode === "auth/user-not-found") {
+        } else if (
+          errorCode === "auth/wrong-password" ||
+          errorCode === "auth/user-not-found"
+        ) {
           toast({
             title: "Epa, tem algo errado! 🤨",
-            description:
-              "Não foi encontrado nenhum usuário com o endereço de e-mail fornecido",
-            position: "top-right",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        } else if (errorCode === "auth/wrong-password") {
-          toast({
-            title: "Epa, tem algo errado! 🤨",
-            description: "A senha fornecida está incorreta",
+            description: "O E-mail ou a senha fornecida está incorreta",
             position: "top-right",
             status: "error",
             duration: 9000,
@@ -316,6 +325,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
             duration: 9000,
             isClosable: true,
           });
+          setIsLoading(false);
           return;
         }
       });
@@ -355,6 +365,7 @@ export default function AuthContextProvider(props: AuthContextProviderProps) {
         registerNewUser,
         loginUser,
         logoutUser,
+        isLoading,
       }}
     >
       {props.children}
