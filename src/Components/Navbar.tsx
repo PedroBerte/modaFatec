@@ -33,6 +33,7 @@ import ProductAddModal from "./ProductAddModal";
 import { useNavigate } from "react-router-dom";
 import { CartItem } from "./CartItem";
 import { Cart } from "./Cart";
+import { useCart } from "../Contexts/CartContext";
 
 export default function Navbar() {
   const toast = useToast();
@@ -57,7 +58,13 @@ export default function Navbar() {
     onClose: onDrawerClose,
   } = useDisclosure();
 
-  const btnRef = React.useRef();
+  const { cart } = useCart();
+
+  let totalQuantity = 0;
+
+  for (let i = 0; i < cart.length; i++) {
+    totalQuantity += cart[i].amount;
+  }
 
   const { user, isLogged } = useAuthContext();
 
@@ -199,7 +206,7 @@ export default function Navbar() {
           }}
           onClick={onDrawerOpen}
         >
-          <Text mr="5px">0</Text>
+          <Text mr="5px">{totalQuantity}</Text>
           <Text mr="15px">Itens</Text>
           <ShoppingCartSimple size={30} />
         </Flex>
